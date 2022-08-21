@@ -1,24 +1,77 @@
-import { StyleSheet, Text, View, Dimensions, TouchableOpacity, Image } from 'react-native'
-import React from 'react'
+import { StyleSheet, Text, View, Dimensions, TouchableOpacity, Image, FlatList, Animated } from 'react-native'
+import React, { useEffect, useState, useRef } from 'react'
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Slider from '@react-native-community/slider';
+import songsData from "../Models/data"
 
-let { width } = Dimensions.get('window')
+let { width } = Dimensions.get('window');
 
 const MusicPlayer = () => {
+    const scrollX = useRef(new Animated.Value(0)).current;
+    const [songIndex, setSongIndex] = useState<any>("0");
+    const songSlider = useRef(null);
+
+    useEffect(() => {
+        scrollX.addListener(({ value }) => {
+            // console.log(value)
+            const index = `${Math.round(value / width)}`
+            setSongIndex(index)
+        })
+
+        return () => {
+            scrollX.removeAllListeners()
+        }
+    }, [])
+
+    const moveForward = () => {
+        songSlider.current.scrollToOffset({
+            offset: (songIndex + 1) * width
+        })
+    }
+
+    const moveBackward = () => {
+        songSlider.current.scrollToOffset({
+            offset: (songIndex - 1) * width
+        })
+    }
+
+    const renderSongs = ({ index, item }: any) => {
+        return (
+            <Animated.View style={
+                {
+                    width: width,
+                    // height: 600,
+                    justifyContent: "center",
+                    alignItems: "center"
+                }
+            }>
+                <View style={styles.artworkContainer}>
+                    <Image style={styles.imgContainer} source={item.artwork} />
+                </View>
+            </Animated.View>
+        )
+    }
+
     return (
         <View style={styles.container}>
             <View style={styles.mainContainer}>
-                <View style={styles.artworkContainer}>
-                    <Image style={styles.imgContainer} source={require("../assets/girlHeadphones.jpg")} />
+
+                <View style={{ width: width }}>
+                    <Animated.FlatList ref={songSlider} data={songsData} renderItem={renderSongs} keyExtractor={item => item.id} horizontal pagingEnabled showsHorizontalScrollIndicator={false} scrollEventThrottle={16} onScroll={Animated.event(
+                        [{
+                            nativeEvent: {
+                                contentOffset: { x: scrollX }
+                            }
+                        }], { useNativeDriver: true }
+                    )} />
                 </View>
 
                 <View>
-                    <Text style={styles.songTitle}>Wait on Me (ft. Kanye West)</Text>
-                    <Text style={styles.artistName}>GROOVY</Text>
+                    <Text style={styles.songTitle}>{songsData[songIndex].title}</Text>
+                    <Text style={styles.artistName}>{songsData[songIndex].artist}</Text>
                 </View>
 
-                <View>
+                <View style={{ paddingHorizontal: 25 }}>
                     <Slider
                         style={styles.progressContainer}
                         minimumValue={0}
@@ -35,13 +88,13 @@ const MusicPlayer = () => {
                 </View>
 
                 <View style={styles.musicControls}>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={moveBackward}>
                         <Ionicons name='play-skip-back-outline' size={30} color="#777777" style={{ marginTop: 25 }} />
                     </TouchableOpacity>
                     <TouchableOpacity>
                         <Ionicons name='ios-pause-circle' size={75} color="#777777" />
                     </TouchableOpacity>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={moveForward}>
                         <Ionicons name='play-skip-forward-outline' size={30} color="#777777" style={{ marginTop: 25 }} />
                     </TouchableOpacity>
                 </View>
@@ -107,14 +160,22 @@ const styles = StyleSheet.create({
     artistName: {
         textAlign: "center",
         fontSize: 16,
-        fontWeight: "200",
+        marginTop: 10,
+        fontWeight: "300",
         color: "#fff"
+    },
+    progress: {
+        // width: "80%",
+        // justifyContent: "center",
+        // alignItems: "center"
     },
     progressContainer: {
         flexDirection: 'row',
         marginTop: 15,
         height: 40,
-        // width: 350
+        width: "85%",
+        justifyContent: "center",
+        alignSelf: "center"
     },
     progressLabel: {
         justifyContent: 'space-between',
@@ -130,7 +191,8 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
         flexDirection: 'row',
         marginTop: 15,
-        alignContent: "center"
+        alignContent: "center",
+
     },
     bottomContainer: {
         borderTopColor: "393E46",
