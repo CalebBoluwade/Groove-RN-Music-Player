@@ -1,14 +1,18 @@
-import { StyleSheet, StatusBar, Text, View } from 'react-native';
-import MusicPlayer from './Screens/MusicPlayer';
+import { StyleSheet, StatusBar, View } from "react-native";
+import Nav from "./Navigation/Nav";
+// import "expo-dev-client";
 
-export default function App() {
+const App = () => {
   return (
     <View style={styles.container}>
-      <StatusBar barStyle="light-content" />
-      <MusicPlayer />
+      <StatusBar barStyle="dark-content" />
+      <Nav />
     </View>
   );
-}
+};
+// AppRegistry.registerComponent(AppName,() => App);
+
+export default App;
 
 const styles = StyleSheet.create({
   container: {

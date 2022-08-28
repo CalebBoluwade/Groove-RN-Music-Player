@@ -1,44 +1,82 @@
+interface props {
+  title: string,
+  artist: string
+  duration: number,
+  url: any
+  artwork: any
+}
+
 const songsData = [
-    {
-        id: "1",
-        title: "Wait on Me (ft. Kanye West)",
-        artist: "GROOVY",
-        Album: true,
-        songCount: "11",
-        artwork: require("../assets/girlHeadphones.jpg")
-    },
-    {
-        id: "2",
-        title: "Wait on Me 2 (ft. Kanye West)",
-        artist: "GROOVY",
-        Album: true,
-        songCount: "11",
-        artwork: require("../assets/girlHeadphones.jpg")
-    },
-    {
-        id: "3",
-        title: "Wait on Me 3 (ft. Kanye West)",
-        artist: "GROOVY",
-        Album: true,
-        songCount: 11,
-        artwork: require("../assets/girlHeadphones.jpg")
-    },
-    {
-        id: "4",
-        title: "Wait on Me 4(ft. Kanye West)",
-        artist: "GROOVY",
-        Album: true,
-        songCount: "11",
-        artwork: require("../assets/girlHeadphones.jpg")
-    },
-    {
-        id: "5",
-        title: "Wait on Me 5 (ft. Kanye West)",
-        artist: "GROOVY",
-        Album: true,
-        songCount: "11",
-        artwork: require("../assets/girlHeadphones.jpg")
-    }
-]
+  {
+    id: "1",
+    title: "Terminator",
+    artist: "Asake",
+    duration: 311,
+    artwork: require("./Data/Terminator.jpg"),
+    url: require("./Data/Asake-Terminator.mp3"),
+  },
+  {
+    id: "2",
+    title: "Call Me Everyday (ft. Wizkid)",
+    artist: "Chris Brown",
+    duration: 311,
+    artwork: require("./Data/Call-Me-Everyday.jpg"),
+    url: require("./Data/Chris_Brown_ft_Wizkid_-_Call_Me_Everyday.mp3"),
+  },
+  {
+    id: "3",
+    title: "Adulthood Na Scam Anthem",
+    artist: "Lade",
+    duration: 311,
+    artwork: require("./Data/Adulthood-Na-Scam-Anthem.jpg"),
+    url: require("./Data/Adulthood_Na_Scam.mp3"),
+  },
+  {
+    id: "4",
+    title: "Contour - Single",
+    artist: "Joeboy",
+    duration: 311,
+    artwork: require("./Data/Joeboy-Contour.jpg"),
+    url: require("./Data/Joeboy-Contour.mp3"),
+  },
+  {
+    id: "5",
+    title: "Girlfriend",
+    artist: "Ruger",
+    Album: true,
+    duration: 311,
+    artwork: require("./Data/Ruger-The-Second-Wave-Deluxe-EP.jpg"),
+    url: require("./Data/Ruger-Girlfriend.mp3"),
+  },
+  {
+    id: "6",
+    title: "Lost Birds",
+    artist: "GROOVY",
+    Album: true,
+    duration: 311,
+    artwork: require("./Data/LostBirds.jpeg"),
+    url: require("./Data/LostBirds.mp3"),
+  },
+  {
+    id: "7",
+    title: "Palmwine Love",
+    artist: "GROOVY",
+    Album: false,
+    duration: 311,
+    artwork: require("./Data/PalmwineLove.jpeg"),
+    url: require("./Data/PalmwineLove.mp3"),
+  },
+  {
+    id: "8",
+    title: "No illusions feat-osii-tima-mayowa-sb",
+    artist: "GROOVY",
+    Album: false,
+    duration: 311,
+    artwork: require("./Data/NoIllusions.jpeg"),
+    url: require("./Data/NoIllusions.mp3"),
+  },
+
+
+];
 
 export default songsData;

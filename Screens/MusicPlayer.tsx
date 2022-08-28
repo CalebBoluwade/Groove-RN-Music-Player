@@ -1,211 +1,281 @@
-import { StyleSheet, Text, View, Dimensions, TouchableOpacity, Image, FlatList, Animated } from 'react-native'
-import React, { useEffect, useState, useRef } from 'react'
+import {
+  StyleSheet,
+  Text,
+  View,
+  Dimensions,
+  TouchableOpacity,
+  Image,
+  SafeAreaView,
+  FlatList,
+  Animated,
+  Platform,
+  ScrollView,
+} from "react-native";
+import React, { useEffect, useState, useRef } from "react";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import Slider from '@react-native-community/slider';
-import songsData from "../Models/data"
+import FontAwesome from "react-native-vector-icons/FontAwesome";
+// import Slider from "@react-native-community/slider";
+import songsData from "../Models/data";
 
-let { width } = Dimensions.get('window');
+const dark = false;
 
-const MusicPlayer = () => {
-    const scrollX = useRef(new Animated.Value(0)).current;
-    const [songIndex, setSongIndex] = useState<any>("0");
-    const songSlider = useRef(null);
+import TrackPlayer, {
+  Capability,
+  Event,
+  RepeatMode,
+  State,
+  usePlaybackState,
+  useProgress,
+  useTrackPlayerEvents,
+} from "react-native-track-player";
+import TopDock from "../Components/TopDock";
+import ModalTrigger from "../Components/ModalTrigger";
+import { DefaultTheme } from "@react-navigation/native";
 
-    useEffect(() => {
-        scrollX.addListener(({ value }) => {
-            // console.log(value)
-            const index = `${Math.round(value / width)}`
-            setSongIndex(index)
-        })
+let { width, height } = Dimensions.get("window");
 
-        return () => {
-            scrollX.removeAllListeners()
-        }
-    }, [])
+const setupPlayer = async () => {
+  // await TrackPlayer.setupPlayer();
+  // await TrackPlayer.add(songsData);
+};
 
-    const moveForward = () => {
-        songSlider.current.scrollToOffset({
-            offset: (songIndex + 1) * width
-        })
-    }
+const togglePlayback = async (playbackState: any) => {
+  // const currentTrack = await TrackPlayer.getCurrentTrack();
+  // if (currentTrack !== null) {
+  //   if (playbackState == State.Paused) {
+  //     // await TrackPlayer.play();
+  //   } else {
+  //     // await TrackPlayer.pause();
+  //   }
+  // }
+};
 
-    const moveBackward = () => {
-        songSlider.current.scrollToOffset({
-            offset: (songIndex - 1) * width
-        })
-    }
+const MusicPlayer = ({ navigation }: any) => {
+  // const playbackState = usePlaybackState();
 
-    const renderSongs = ({ index, item }: any) => {
-        return (
-            <Animated.View style={
-                {
-                    width: width,
-                    // height: 600,
-                    justifyContent: "center",
-                    alignItems: "center"
-                }
-            }>
-                <View style={styles.artworkContainer}>
-                    <Image style={styles.imgContainer} source={item.artwork} />
-                </View>
-            </Animated.View>
-        )
-    }
+  // let artwork;
+  // return songsData.forEach((img) => {
+  //   artwork = img.artwork;
+  // });
 
+  const DetailsPage = (item: object) => {
+    console.log(item);
+  };
+
+  const renderItem = ({ item }: any) => {
     return (
-        <View style={styles.container}>
-            <View style={styles.mainContainer}>
+      <View>
+        <TouchableOpacity onPress={() => DetailsPage(item)}>
+          <Image style={styles.artworkContainer} source={item.artwork} />
+        </TouchableOpacity>
 
-                <View style={{ width: width }}>
-                    <Animated.FlatList ref={songSlider} data={songsData} renderItem={renderSongs} keyExtractor={item => item.id} horizontal pagingEnabled showsHorizontalScrollIndicator={false} scrollEventThrottle={16} onScroll={Animated.event(
-                        [{
-                            nativeEvent: {
-                                contentOffset: { x: scrollX }
-                            }
-                        }], { useNativeDriver: true }
-                    )} />
-                </View>
-
-                <View>
-                    <Text style={styles.songTitle}>{songsData[songIndex].title}</Text>
-                    <Text style={styles.artistName}>{songsData[songIndex].artist}</Text>
-                </View>
-
-                <View style={{ paddingHorizontal: 25 }}>
-                    <Slider
-                        style={styles.progressContainer}
-                        minimumValue={0}
-                        maximumValue={100}
-                        thumbTintColor='FFD369'
-                        minimumTrackTintColor="FFD369"
-                        maximumTrackTintColor='#fff'
-                        onSlidingComplete={() => { }}
-                    />
-                    <View style={styles.progressLabel}>
-                        <Text style={styles.progressLabelBegin}>0:00</Text>
-                        <Text style={styles.progressLabelEnd}>3.55</Text>
-                    </View>
-                </View>
-
-                <View style={styles.musicControls}>
-                    <TouchableOpacity onPress={moveBackward}>
-                        <Ionicons name='play-skip-back-outline' size={30} color="#777777" style={{ marginTop: 25 }} />
-                    </TouchableOpacity>
-                    <TouchableOpacity>
-                        <Ionicons name='ios-pause-circle' size={75} color="#777777" />
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={moveForward}>
-                        <Ionicons name='play-skip-forward-outline' size={30} color="#777777" style={{ marginTop: 25 }} />
-                    </TouchableOpacity>
-                </View>
-            </View>
-
-            <View style={styles.bottomContainer}>
-                <View style={styles.bottomButtons}>
-                    <TouchableOpacity>
-                        <Ionicons name='heart-outline' size={30} color="#777777" />
-                    </TouchableOpacity>
-                    <TouchableOpacity>
-                        <Ionicons name='repeat' size={30} color="#777777" />
-                    </TouchableOpacity>
-                    <TouchableOpacity>
-                        <Ionicons name='share-outline' size={30} color="#777777" />
-                    </TouchableOpacity>
-                    <TouchableOpacity>
-                        <Ionicons name='ellipsis-horizontal' size={30} color="#777777" />
-                    </TouchableOpacity>
-                </View>
-            </View>
+        <View style={{ width: 170, marginVertical: 2, padding: 5 }}>
+          <Text style={{ color: "#000" }}>{item.title}</Text>
+          <Text style={{ color: "#000" }}>{item.artist}</Text>
         </View>
-    )
-}
+      </View>
+    );
+  };
 
-export default MusicPlayer
+  const renderItem2 = ({ item }: any) => {
+    return (
+      <View style={styles.playlistContainer}>
+        <View style={styles.playlistContainer}>
+          <Image style={styles.playlistItem} source={item.artwork} />
+
+          <View style={{ width: "80%" }}>
+            <Text style={{ color: "#000" }}>{item.title}</Text>
+            <Text style={{ color: "#000" }}>{item.artist}</Text>
+          </View>
+        </View>
+
+        <View>
+          <TouchableOpacity>
+            <Ionicons name="ellipsis-vertical" size={10} color="#777777" />
+          </TouchableOpacity>
+        </View>
+      </View>
+    );
+  };
+
+  return (
+    <View style={styles.container}>
+      <SafeAreaView style={styles.mainContainer}>
+        <TopDock navigation={navigation} />
+
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <View style={{ marginTop: 5 }}>
+            <Text style={styles.BoxText}>Listen Here</Text>
+            <View>
+              <FlatList
+                data={songsData}
+                renderItem={renderItem}
+                keyExtractor={(item) => item.id}
+                style={styles.Boxes}
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                scrollEventThrottle={18}
+              ></FlatList>
+            </View>
+
+            <View>
+              <Text style={styles.BoxText}>Quick Picks</Text>
+              <ScrollView horizontal>
+                <FlatList
+                  data={songsData}
+                  renderItem={renderItem2}
+                  keyExtractor={(item) => item.id}
+                  // style={styles.playlistContainer}
+                  // numColumns={4}
+                  scrollEnabled={false}
+                  showsHorizontalScrollIndicator={false}
+                  scrollEventThrottle={12}
+                ></FlatList>
+              </ScrollView>
+            </View>
+
+            <View>
+              <Text style={styles.BoxText}>Albums & Eps</Text>
+              <FlatList
+                data={songsData}
+                renderItem={renderItem}
+                keyExtractor={(item) => item.id}
+                style={styles.Boxes}
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                scrollEventThrottle={18}
+              ></FlatList>
+            </View>
+          </View>
+        </ScrollView>
+      </SafeAreaView>
+
+      <ModalTrigger navigation={navigation} />
+    </View>
+  );
+};
+
+export default MusicPlayer;
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        // backgroundColor: "#222831"
-        backgroundColor: "#000"
-    },
-    mainContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignSelf: 'center'
-    },
-    artworkContainer: {
-        width: 320,
-        height: 320,
-        marginBottom: 25,
-        shadowColor: '#ccc',
-        shadowOffset: {
-            width: 5,
-            height: 5
-        },
-        shadowOpacity: 0.5,
-        shadowRadius: 3.84,
-        elevation: 5
-    },
-    imgContainer: {
-        width: '100%',
-        height: '100%',
-        borderRadius: 7
-    },
-    songTitle: {
-        fontSize: 18,
-        fontWeight: "600",
-        textAlign: "center",
-        color: "#fff"
-    },
-    artistName: {
-        textAlign: "center",
-        fontSize: 16,
-        marginTop: 10,
-        fontWeight: "300",
-        color: "#fff"
-    },
-    progress: {
-        // width: "80%",
-        // justifyContent: "center",
-        // alignItems: "center"
-    },
-    progressContainer: {
-        flexDirection: 'row',
-        marginTop: 15,
-        height: 40,
-        width: "85%",
-        justifyContent: "center",
-        alignSelf: "center"
-    },
-    progressLabel: {
-        justifyContent: 'space-between',
-        flexDirection: 'row'
-    },
-    progressLabelBegin: {
-        color: "#fff"
-    },
-    progressLabelEnd: {
-        color: "#fff"
-    },
-    musicControls: {
-        justifyContent: 'space-around',
-        flexDirection: 'row',
-        marginTop: 15,
-        alignContent: "center",
+  container: {
+    flex: 1,
+    // justifyContent: "center",
+    // marginTop: Platform.OS === "android" ? 5 : 0,
+  },
 
-    },
-    bottomContainer: {
-        borderTopColor: "393E46",
-        borderTopWidth: 1,
-        width: width,
-        alignItems: "center",
-        padding: 15
+  mainContainer: {
+    flex: 1,
+    padding: 25,
+    alignSelf: "center",
+    backgroundColor: dark ? "#000" : "#607EAA",
+  },
 
+  BoxText: {
+    color: dark ? "#000" : "#000",
+    fontSize: 24,
+    paddingLeft: 15,
+    paddingTop: 10,
+  },
+  Boxes: {
+    shadowOffset: {
+      width: 5,
+      height: 5,
     },
-    bottomButtons: {
-        padding: 5,
-        flexDirection: "row",
-        justifyContent: "space-between",
-        width: "80%"
-    }
-})
+    shadowOpacity: 0.5,
+    shadowRadius: 3.84,
+    // elevation: 15,
+  },
+  artwork: {
+    // paddingHorizontal: 5,
+    marginVertical: 7,
+    paddingLeft: 15,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  artworkContainer: {
+    width: width / 2.85,
+    height: 150,
+    borderRadius: 10,
+    marginHorizontal: 7,
+    padding: 25,
+    marginVertical: 7,
+    shadowColor: dark ? "#ccc" : "#000",
+    shadowOffset: {
+      width: 5,
+      height: 5,
+    },
+    shadowOpacity: 0.5,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  playlistContainer: {
+    // width: "85%",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingHorizontal: 7,
+    marginVertical: 3,
+  },
+  playlistItem: {
+    width: 40,
+    height: 40,
+  },
+  playerModal: {
+    // borderTopColor: "#393E46",
+    backgroundColor: "#000",
+    justifyContent: "space-between",
+    padding: 32,
+    flexDirection: "row",
+  },
+  songTitle: {
+    fontSize: 18,
+    fontWeight: "600",
+    textAlign: "center",
+    color: dark ? "#fff" : "#000",
+  },
+  songTitleModal: {
+    fontSize: 16,
+    fontWeight: "400",
+    textAlign: "left",
+    color: "#fff",
+  },
+  artistName: {
+    textAlign: "center",
+    fontSize: 16,
+    marginTop: 5,
+    fontWeight: "300",
+    color: dark ? "#fff" : "#000",
+  },
+  artistNameModal: {
+    textAlign: "left",
+    fontSize: 12,
+    marginTop: 5,
+    fontWeight: "300",
+    color: "#fff",
+  },
+  progressContainer: {
+    flexDirection: "row",
+    marginTop: 15,
+    height: 40,
+    width: "85%",
+    justifyContent: "center",
+    alignSelf: "center",
+  },
+  progressLabel: {
+    justifyContent: "space-between",
+    flexDirection: "row",
+  },
+  progressLabelBegin: {
+    color: "#fff",
+  },
+  progressLabelEnd: {
+    color: "#fff",
+  },
+  musicControls: {
+    justifyContent: "space-around",
+    flexDirection: "row",
+    marginTop: 15,
+    alignContent: "center",
+  },
+});
