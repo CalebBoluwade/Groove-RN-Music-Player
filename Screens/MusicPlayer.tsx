@@ -8,14 +8,17 @@ import {
   SafeAreaView,
   FlatList,
   Animated,
+  ActionSheetIOS,
+  Appearance,
+  StatusBar,
   Platform,
   ScrollView,
 } from "react-native";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useContext } from "react";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
 // import Slider from "@react-native-community/slider";
 import songsData from "../Models/data";
+import SongOptions from "../Components/SongOptions";
 
 const dark = false;
 
@@ -31,35 +34,51 @@ import TrackPlayer, {
 import TopDock from "../Components/TopDock";
 import ModalTrigger from "../Components/ModalTrigger";
 import { DefaultTheme } from "@react-navigation/native";
+import { DetailsContext } from "../Context/AppContextProvider";
 
 let { width, height } = Dimensions.get("window");
-
-const setupPlayer = async () => {
-  // await TrackPlayer.setupPlayer();
-  // await TrackPlayer.add(songsData);
-};
-
-const togglePlayback = async (playbackState: any) => {
-  // const currentTrack = await TrackPlayer.getCurrentTrack();
-  // if (currentTrack !== null) {
-  //   if (playbackState == State.Paused) {
-  //     // await TrackPlayer.play();
-  //   } else {
-  //     // await TrackPlayer.pause();
-  //   }
-  // }
-};
+let colorScheme = Appearance.getColorScheme();
 
 const MusicPlayer = ({ navigation }: any) => {
+  const { detailsData, setDetailsData }: any = useContext(DetailsContext);
   // const playbackState = usePlaybackState();
+  // const progress = useProgress();
 
-  // let artwork;
-  // return songsData.forEach((img) => {
-  //   artwork = img.artwork;
-  // });
+  const setupPlayer = async () => {
+    // await TrackPlayer.setupPlayer();
+    // await TrackPlayer.add(songsData);
+  };
+
+  const togglePlayback = async (playbackState: any) => {
+    // const currentTrack = await TrackPlayer.getCurrentTrack();
+    // if (currentTrack !== null) {
+    //   if (playbackState == State.Paused) {
+    //     // await TrackPlayer.play();
+    //   } else {
+    //     // await TrackPlayer.pause();
+    //   }
+    // }
+  };
+
+  const SongOptions = () => {
+    if (Platform.OS === "ios") {
+      ActionSheetIOS.showActionSheetWithOptions(
+        {
+          options: ["Cancel", "Generate number", "Reset"],
+          // destructiveButtonIndex: 2,
+
+          cancelButtonIndex: 0,
+          // userInterfaceStyle: "dark",
+        },
+        (buttonIndex) => {}
+      );
+    }
+  };
 
   const DetailsPage = (item: object) => {
-    console.log(item);
+    setDetailsData(item);
+    // console.log(detailsData);
+    navigation.navigate("Details");
   };
 
   const renderItem = ({ item }: any) => {
@@ -70,8 +89,8 @@ const MusicPlayer = ({ navigation }: any) => {
         </TouchableOpacity>
 
         <View style={{ width: 170, marginVertical: 2, padding: 5 }}>
-          <Text style={{ color: "#000" }}>{item.title}</Text>
-          <Text style={{ color: "#000" }}>{item.artist}</Text>
+          <Text style={{ color: dark ? "#fff" : "#000" }}>{item.title}</Text>
+          <Text style={{ color: dark ? "#fff" : "#000" }}>{item.artist}</Text>
         </View>
       </View>
     );
@@ -84,14 +103,22 @@ const MusicPlayer = ({ navigation }: any) => {
           <Image style={styles.playlistItem} source={item.artwork} />
 
           <View style={{ width: "80%" }}>
-            <Text style={{ color: "#000" }}>{item.title}</Text>
-            <Text style={{ color: "#000" }}>{item.artist}</Text>
+            <Text style={{ color: colorScheme === "dark" ? "#000" : "#fff" }}>
+              {item.title}
+            </Text>
+            <Text style={{ color: colorScheme === "dark" ? "#000" : "#fff" }}>
+              {item.artist}
+            </Text>
           </View>
         </View>
 
         <View>
-          <TouchableOpacity>
-            <Ionicons name="ellipsis-vertical" size={10} color="#777777" />
+          <TouchableOpacity onPress={() => SongOptions()}>
+            <Ionicons
+              name="ellipsis-vertical"
+              size={20}
+              color={colorScheme === "dark" ? "#777" : "#000"}
+            />
           </TouchableOpacity>
         </View>
       </View>
@@ -100,6 +127,9 @@ const MusicPlayer = ({ navigation }: any) => {
 
   return (
     <View style={styles.container}>
+      <StatusBar
+        barStyle={colorScheme === "dark" ? "light-content" : "dark-content"}
+      />
       <SafeAreaView style={styles.mainContainer}>
         <TopDock navigation={navigation} />
 
@@ -115,6 +145,7 @@ const MusicPlayer = ({ navigation }: any) => {
                 horizontal
                 showsHorizontalScrollIndicator={false}
                 scrollEventThrottle={18}
+                // onLongPress={() => navigation.navigate("SongOptions")}
               ></FlatList>
             </View>
 
@@ -150,7 +181,28 @@ const MusicPlayer = ({ navigation }: any) => {
         </ScrollView>
       </SafeAreaView>
 
+      {/* <SongOptions /> */}
       <ModalTrigger navigation={navigation} />
+
+      <View style={styles.songOptionsModal}>
+        <View>
+          <TouchableOpacity>
+            <Text>Play Next</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity>
+            <Text>Share</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity>
+            <Text>Play Next</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity>
+            <Text>Play Next</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
     </View>
   );
 };
@@ -164,15 +216,22 @@ const styles = StyleSheet.create({
     // marginTop: Platform.OS === "android" ? 5 : 0,
   },
 
+  songOptionsModal: {
+    backgroundColor: "#000",
+    borderTopColor: "#393E46",
+    height: 300,
+    padding: 15,
+  },
+
   mainContainer: {
     flex: 1,
     padding: 25,
     alignSelf: "center",
-    backgroundColor: dark ? "#000" : "#607EAA",
+    backgroundColor: colorScheme === "dark" ? "#000" : "#fff",
   },
 
   BoxText: {
-    color: dark ? "#000" : "#000",
+    color: colorScheme === "dark" ? "#fff" : "#000",
     fontSize: 24,
     paddingLeft: 15,
     paddingTop: 10,
@@ -184,23 +243,23 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.5,
     shadowRadius: 3.84,
-    // elevation: 15,
+    elevation: 15,
   },
   artwork: {
     // paddingHorizontal: 5,
     marginVertical: 7,
-    paddingLeft: 15,
+    // marginLeft: 35,
     justifyContent: "center",
     alignItems: "center",
   },
   artworkContainer: {
-    width: width / 2.85,
-    height: 150,
+    width: width / 2.75,
+    height: Platform.OS === "ios" ? 160 : 185,
     borderRadius: 10,
     marginHorizontal: 7,
     padding: 25,
     marginVertical: 7,
-    shadowColor: dark ? "#ccc" : "#000",
+    shadowColor: colorScheme === "dark" ? "#fff" : "#000",
     shadowOffset: {
       width: 5,
       height: 5,

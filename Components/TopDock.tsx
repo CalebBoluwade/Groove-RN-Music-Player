@@ -25,7 +25,7 @@ const TopDock = ({ navigation }: any) => {
           style={styles.explorerT}
         >
           <Text style={{ color: "#fff" }}>Home</Text>
-          <Ionicons name="ios-home-outline" size={20} color="#777777" />
+          <Ionicons name="ios-home-outline" size={20} color="#fff" />
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -34,7 +34,7 @@ const TopDock = ({ navigation }: any) => {
           style={styles.explorerT}
         >
           <Text style={{ color: "#fff", marginBottom: 2 }}>Explore</Text>
-          <FontAwesome name="wpexplorer" size={20} color="#777777" />
+          <FontAwesome name="wpexplorer" size={20} color="#fff" />
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -43,7 +43,7 @@ const TopDock = ({ navigation }: any) => {
           style={styles.explorerT}
         >
           <Text style={{ color: "#fff" }}>Search</Text>
-          <Ionicons name="ios-search-outline" size={20} color="#777777" />
+          <Ionicons name="ios-search-outline" size={20} color="#fff" />
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -62,13 +62,13 @@ export default TopDock;
 
 const styles = StyleSheet.create({
   explorer: {
-    // position: "absolute",
+    // position: "relative",
     // top: Platform.OS === "ios" ? 400 : 455,
     // zIndex: 3,
     width: width / 1.1,
     height: 70,
     padding: 15,
-    backgroundColor: dark ? "#393E46" : "#000",
+    backgroundColor: dark ? "#393E46" : "#73A5C6",
     borderRadius: 10,
     flexDirection: "row",
     justifyContent: "space-evenly",

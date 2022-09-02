@@ -7,7 +7,7 @@ import {
 } from "react-native";
 import React, { useRef, useState } from "react";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
+import Slider from "@react-native-community/slider";
 import songsData from "../Models/data";
 
 const ModalTrigger = ({ navigation }: any) => {
@@ -21,14 +21,16 @@ const ModalTrigger = ({ navigation }: any) => {
       onPress={() => navigation.navigate("PlayerModal")}
       style={styles.playerModal}
     >
-      <View>
-        <Text style={styles.songTitleModal}>{songsData[songIndex].title}</Text>
-        <Text style={styles.artistNameModal}>
-          {songsData[songIndex].artist}
-        </Text>
-      </View>
+      <View style={styles.modalView}>
+        <View>
+          <Text style={styles.songTitleModal}>
+            {songsData[songIndex].title}
+          </Text>
+          <Text style={styles.artistNameModal}>
+            {songsData[songIndex].artist}
+          </Text>
+        </View>
 
-      <View>
         <TouchableOpacity
         // onPress={() => togglePlayback(playbackState)}
         >
@@ -42,6 +44,16 @@ const ModalTrigger = ({ navigation }: any) => {
           />
         </TouchableOpacity>
       </View>
+      {/* 
+      <Slider
+        style={styles.progress}
+        value={23}
+        minimumValue={0}
+        maximumValue={100}
+        minimumTrackTintColor="#777777"
+        maximumTrackTintColor="#fff"
+        onSlidingComplete={() => {}}
+      /> */}
     </TouchableOpacity>
   );
 };
@@ -50,13 +62,19 @@ export default ModalTrigger;
 
 const styles = StyleSheet.create({
   playerModal: {
-    // borderTopColor: "#393E46",
     backgroundColor: "#000",
-    justifyContent: "space-between",
-    padding: 25,
-    flexDirection: "row",
+    borderTopColor: "#393E46",
   },
-
+  modalView: {
+    justifyContent: "space-between",
+    flexDirection: "row",
+    paddingVertical: 5,
+    paddingHorizontal: 15,
+  },
+  progress: {
+    position: "relative",
+    bottom: 18,
+  },
   songTitleModal: {
     fontSize: 18,
     fontWeight: "400",

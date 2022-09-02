@@ -6,6 +6,8 @@ import MusicPlayer from "../Screens/MusicPlayer";
 import ExplorerScreen from "../Screens/ExplorerScreen";
 import PlayerModal from "../Screens/PlayerModal";
 import SearchScreen from "../Screens/SearchScreen";
+import SongDetailPage from "../Screens/SongDetailPage";
+import SongOptions from "../Components/SongOptions";
 
 const Stack = createStackNavigator();
 
@@ -17,6 +19,8 @@ const Nav = () => {
           <Stack.Screen name="Home" component={MusicPlayer} />
           <Stack.Screen name="Explorer" component={ExplorerScreen} />
           <Stack.Screen name="Search" component={SearchScreen} />
+          <Stack.Screen name="Details" component={SongDetailPage} />
+          {/* <Stack.Screen name="SongOptions" component={SongOptions} /> */}
         </Stack.Group>
         <Stack.Group screenOptions={{ presentation: "modal" }}>
           <Stack.Screen name="PlayerModal" component={PlayerModal} />

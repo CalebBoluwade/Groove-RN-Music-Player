@@ -7,11 +7,13 @@ import {
   Image,
   FlatList,
   Animated,
+  Appearance,
   Platform,
   ImageBackground,
 } from "react-native";
 import React, { useEffect, useState, useRef } from "react";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Slider from "@react-native-community/slider";
 import songsData from "../Models/data";
 
@@ -26,39 +28,74 @@ import TrackPlayer, {
 } from "react-native-track-player";
 
 let { width } = Dimensions.get("window");
+const colorScheme = Appearance.getColorScheme();
 
 const shareActionSheet = () => {
   console.log("f");
 };
 
-const setupPlayer = async () => {
-  // await TrackPlayer.setupPlayer();
-  // await TrackPlayer.add(songsData);
-};
-
-const togglePlayback = async (playbackState: any) => {
-  // const currentTrack = await TrackPlayer.getCurrentTrack();
-  // if (currentTrack !== null) {
-  //   if (playbackState == State.Paused) {
-  //     // await TrackPlayer.play();
-  //   } else {
-  //     // await TrackPlayer.pause();
-  //   }
-  // }
-};
-
 const PlayerModal = ({ navigation }: any) => {
   // const playbackState = usePlaybackState();
+  // const progress = useProgress();
+
+  const setupPlayer = async () => {
+    // await TrackPlayer.setupPlayer();
+    // await TrackPlayer.add(songsData);
+  };
+
+  const togglePlayback = async (playbackState: any) => {
+    // const currentTrack = await TrackPlayer.getCurrentTrack();
+    // if (currentTrack !== null) {
+    //   if (playbackState == State.Paused) {
+    //     // await TrackPlayer.play();
+    //   } else {
+    //     // await TrackPlayer.pause();
+    //   }
+    // }
+  };
+  const [repeatModeIcon, setRepeatMode] = useState("off");
+
+  const triggerRepeatMode = async () => {
+    if (repeatModeIcon == "off") {
+      return "repeat-off";
+    }
+    if (repeatModeIcon == "track") {
+      return "repeat-once";
+    }
+    if (repeatModeIcon == "repeat") {
+      return "repeat";
+    }
+  };
+
+  const repeatMode = async () => {
+    if (repeatModeIcon == "off") {
+      // await TrackPlayer.setRepeatMode(RepeatMode.Track);
+      setRepeatMode("track");
+    }
+    if (repeatModeIcon == "track") {
+      // await TrackPlayer.setRepeatMode(RepeatMode.Queue);
+      setRepeatMode("repeat");
+    }
+    if (repeatModeIcon == "repeat") {
+      // await TrackPlayer.setRepeatMode(RepeatMode.Off);
+      setRepeatMode("off");
+    }
+  };
 
   const scrollX = useRef(new Animated.Value(0)).current;
   const [songIndex, setSongIndex] = useState<any>("0");
   const songSlider = useRef(null);
 
+  const skipTo = async (trackId: number) => {
+    // await TrackPlayer.skip(trackId);
+  };
+
   useEffect(() => {
     // setupPlayer();
     scrollX.addListener(({ value }) => {
       // console.log(value)
-      const index = `${Math.round(value / width)}`;
+      const index = Math.round(value / width);
+      skipTo(index);
       setSongIndex(index);
     });
 
@@ -101,16 +138,25 @@ const PlayerModal = ({ navigation }: any) => {
         <View style={{ paddingHorizontal: 5, width: width }}>
           <Slider
             style={styles.progressContainer}
+            // value={progress.position}
             minimumValue={0}
             maximumValue={100}
-            thumbTintColor="FFD369"
-            minimumTrackTintColor="FFD369"
+            // maximumValue={Progress.duration}
+            thumbTintColor="#FFD369"
+            minimumTrackTintColor="#FFD369"
             maximumTrackTintColor="#fff"
-            onSlidingComplete={() => {}}
+            onSlidingComplete={async (value) => {
+              // await TrackPlayer.seekTo(value)
+            }}
           />
           <View style={styles.progressLabel}>
-            <Text style={styles.progressLabelBegin}>0:00</Text>
-            <Text style={styles.progressLabelEnd}>3.55</Text>
+            <Text style={styles.progressLabelBegin}>
+              {/* {new Date(progress.position * 10000).toISOString().substring(14, 5)} */}
+              0.00
+            </Text>
+            <Text style={styles.progressLabelEnd}>
+              {/* {new Date((progress.duration - progress.position) * 10000).toISOString().substring(14, 5)} */}
+            </Text>
           </View>
         </View>
       </Animated.View>
@@ -132,7 +178,7 @@ const PlayerModal = ({ navigation }: any) => {
             horizontal
             pagingEnabled
             showsHorizontalScrollIndicator={false}
-            scrollEventThrottle={16}
+            scrollEventThrottle={6}
             onScroll={Animated.event(
               [
                 {
@@ -148,14 +194,18 @@ const PlayerModal = ({ navigation }: any) => {
 
         <View style={styles.musicControls}>
           <TouchableOpacity>
-            <Ionicons name="repeat" size={30} color="#777777" />
+            <Ionicons
+              name="repeat"
+              size={30}
+              color={colorScheme === "dark" ? "#fff" : "#777777"}
+            />
           </TouchableOpacity>
           <TouchableOpacity onPress={moveBackward}>
             <Ionicons
               name="play-skip-back-outline"
               size={30}
-              color="#777777"
-              style={{ marginTop: 25 }}
+              color={colorScheme === "dark" ? "#fff" : "#777777"}
+              // style={{ marginTop: 25 }}
             />
           </TouchableOpacity>
           <TouchableOpacity
@@ -167,19 +217,22 @@ const PlayerModal = ({ navigation }: any) => {
                 // playbackState == State.Playing ? "ios-pause" : "ios-play-circle"
               }
               size={65}
-              color="#777777"
+              color={colorScheme === "dark" ? "#fff" : "#777777"}
             />
           </TouchableOpacity>
           <TouchableOpacity onPress={moveForward}>
             <Ionicons
               name="play-skip-forward-outline"
               size={30}
-              color="#777777"
-              style={{ marginTop: 25 }}
+              color={colorScheme === "dark" ? "#fff" : "#777777"}
             />
           </TouchableOpacity>
           <TouchableOpacity>
-            <Ionicons name="shuffle" size={30} color="#777777" />
+            <Ionicons
+              name="shuffle"
+              size={30}
+              color={colorScheme === "dark" ? "#fff" : "#777777"}
+            />
           </TouchableOpacity>
         </View>
       </View>
@@ -189,8 +242,12 @@ const PlayerModal = ({ navigation }: any) => {
           <TouchableOpacity>
             <Ionicons name="heart-outline" size={30} color="#777777" />
           </TouchableOpacity>
-          <TouchableOpacity>
-            <Ionicons name="repeat" size={30} color="#777777" />
+          <TouchableOpacity onPress={repeatMode}>
+            <Ionicons
+              name={`${triggerRepeatMode()}`}
+              size={30}
+              color={repeatModeIcon === "off" ? "#777777" : "#FFFFFF"}
+            />
           </TouchableOpacity>
 
           <TouchableOpacity onPress={shareActionSheet}>
@@ -269,10 +326,11 @@ const styles = StyleSheet.create({
     color: "#fff",
   },
   musicControls: {
-    justifyContent: "space-around",
+    justifyContent: "space-evenly",
     flexDirection: "row",
     marginTop: 10,
-    alignContent: "center",
+    // justifyContent: "center",
+    alignItems: "center",
   },
   bottomContainer: {
     // borderTopRightRadius: 15,

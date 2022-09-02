@@ -6,7 +6,7 @@ import {
   Dimensions,
   SafeAreaView,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import ModalTrigger from "../Components/ModalTrigger";
 
 const dark = false;
@@ -14,12 +14,18 @@ const { width } = Dimensions.get("window");
 
 const SearchScreen = ({ navigation }: any) => {
   const [search, setSearch] = useState<String>("");
+  const focusRef: any = useRef();
+
+  useEffect(() => {
+    focusRef.current.focus();
+  }, []);
 
   return (
     <View style={styles.container}>
       <SafeAreaView style={styles.mainContainer}>
         <TextInput
           style={styles.searchInput}
+          ref={focusRef.current}
           placeholder="Your Library"
           onChangeText={(text) => setSearch(text)}
         />
