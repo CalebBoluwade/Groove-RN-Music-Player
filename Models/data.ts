@@ -14,8 +14,8 @@ const songsData = [
     duration: 311,
     album: false,
     albumId: null,
-    artwork: require("./Data/Terminator.jpg"),
-    url: require("./Data/Asake-Terminator.mp3"),
+    artwork: require("./Data/Artwork/Terminator.jpeg"),
+    url: require("./Data/Songs/Asake-Terminator.mp3"),
   },
   {
     id: "2",
@@ -24,8 +24,8 @@ const songsData = [
     duration: 311,
     album: false,
     albumId: null,
-    artwork: require("./Data/Call-Me-Everyday.jpg"),
-    url: require("./Data/Chris_Brown_ft_Wizkid_-_Call_Me_Everyday.mp3"),
+    artwork: require("./Data/Artwork/Call-Me-Everyday.jpg"),
+    url: require("./Data/Songs/Chris_Brown_ft_Wizkid_-_Call_Me_Everyday.mp3"),
   },
   {
     id: "3",
@@ -34,8 +34,8 @@ const songsData = [
     duration: 311,
     album: false,
     albumId: null,
-    artwork: require("./Data/Adulthood-Na-Scam-Anthem.jpg"),
-    url: require("./Data/Adulthood_Na_Scam.mp3"),
+    artwork: require("./Data/Artwork/Adulthood-Na-Scam-Anthem.jpg"),
+    url: require("./Data/Songs/Adulthood_Na_Scam.mp3"),
   },
   {
     id: "4",
@@ -44,8 +44,8 @@ const songsData = [
     duration: 311,
     album: false,
     albumId: null,
-    artwork: require("./Data/Joeboy-Contour.jpg"),
-    url: require("./Data/Joeboy-Contour.mp3"),
+    artwork: require("./Data/Artwork/Joeboy-Contour.jpg"),
+    url: require("./Data/Songs/Joeboy-Contour.mp3"),
   },
   {
     id: "5",
@@ -55,8 +55,8 @@ const songsData = [
     duration: 311,
     album: false,
     albumId: null,
-    artwork: require("./Data/Ruger-The-Second-Wave-Deluxe-EP.jpg"),
-    url: require("./Data/Ruger-Girlfriend.mp3"),
+    artwork: require("./Data/Artwork/Ruger-The-Second-Wave-Deluxe-EP.jpg"),
+    url: require("./Data/Songs/Ruger-Girlfriend.mp3"),
   },
   {
     id: "6",
@@ -66,8 +66,8 @@ const songsData = [
     duration: 311,
     album: false,
     albumId: null,
-    artwork: require("./Data/LostBirds.jpeg"),
-    url: require("./Data/LostBirds.mp3"),
+    artwork: require("./Data/Artwork/LostBirds.jpeg"),
+    url: require("./Data/Songs/LostBirds.mp3"),
   },
   {
     id: "7",
@@ -77,8 +77,8 @@ const songsData = [
     duration: 311,
     album: false,
     albumId: null,
-    artwork: require("./Data/PalmwineLove.jpeg"),
-    url: require("./Data/PalmwineLove.mp3"),
+    artwork: require("./Data/Artwork/PalmwineLove.jpeg"),
+    url: require("./Data/Songs/PalmwineLove.mp3"),
   },
   {
     id: "8",
@@ -88,8 +88,8 @@ const songsData = [
     duration: 311,
     album: false,
     albumId: null,
-    artwork: require("./Data/NoIllusions.jpeg"),
-    url: require("./Data/NoIllusions.mp3"),
+    artwork: require("./Data/Artwork/NoIllusions.jpeg"),
+    url: require("./Data/Songs/NoIllusions.mp3"),
   },
 
 

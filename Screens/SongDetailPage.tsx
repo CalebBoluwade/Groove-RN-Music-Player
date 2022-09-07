@@ -60,7 +60,10 @@ const SongDetailPage = ({ navigation }: any) => {
           </View>
         </View>
 
-        <TouchableOpacity style={{ justifyContent: "center" }}>
+        <TouchableOpacity
+          style={{ justifyContent: "center" }}
+          onPress={() => navigation.navigate("SongOptions")}
+        >
           <Ionicons name="ellipsis-vertical" size={21} color="#777777" />
         </TouchableOpacity>
       </TouchableOpacity>

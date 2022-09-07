@@ -2,25 +2,29 @@ import React, { useState, createContext } from "react";
 
 export const DetailsContext = createContext({});
 
-const Theme = {
-  Darktheme: {
-    theme: "dark",
-    bg: "#fff",
-    color: "#000",
-  },
-  lightTheme: {
-    theme: "light",
-    bg: "#000",
-    color: "#fff",
-  },
-};
-
 const AppContextProvider = ({ children }: any) => {
   const [detailsData, setDetailsData] = useState();
-  // const [appTheme, setAppTheme] = useState({});
+  const [optionsData, setOptionsData] = useState();
+
+  const [currentSongTitle, setCurrentSongTitle] = useState();
+  const [currentSongArtist, setCurrentSongArtist] = useState();
+  const [currentSongArtwork, setCurrentSongArtwork] = useState();
 
   return (
-    <DetailsContext.Provider value={{ detailsData, setDetailsData }}>
+    <DetailsContext.Provider
+      value={{
+        detailsData,
+        setDetailsData,
+        optionsData,
+        setOptionsData,
+        currentSongArtist,
+        currentSongArtwork,
+        currentSongTitle,
+        setCurrentSongTitle,
+        setCurrentSongArtist,
+        setCurrentSongArtwork,
+      }}
+    >
       {children}
     </DetailsContext.Provider>
   );

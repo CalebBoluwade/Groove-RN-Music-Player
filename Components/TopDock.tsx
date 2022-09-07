@@ -17,44 +17,42 @@ const dark = false;
 
 const TopDock = ({ navigation }: any) => {
   return (
-    <View>
-      <Animated.View style={styles.explorer}>
-        <TouchableOpacity
-          activeOpacity={0.9}
-          onPress={() => navigation.navigate("Home")}
-          style={styles.explorerT}
-        >
-          <Text style={{ color: "#fff" }}>Home</Text>
-          <Ionicons name="ios-home-outline" size={20} color="#fff" />
-        </TouchableOpacity>
+    <Animated.View style={styles.explorer}>
+      <TouchableOpacity
+        activeOpacity={0.9}
+        onPress={() => navigation.navigate("Home")}
+        style={styles.explorerT}
+      >
+        <Text style={{ color: "#fff" }}>Home</Text>
+        <Ionicons name="ios-home-outline" size={20} color="#fff" />
+      </TouchableOpacity>
 
-        <TouchableOpacity
-          activeOpacity={0.9}
-          onPress={() => navigation.navigate("Explorer")}
-          style={styles.explorerT}
-        >
-          <Text style={{ color: "#fff", marginBottom: 2 }}>Explore</Text>
-          <FontAwesome name="wpexplorer" size={20} color="#fff" />
-        </TouchableOpacity>
+      <TouchableOpacity
+        activeOpacity={0.9}
+        onPress={() => navigation.navigate("Explorer")}
+        style={styles.explorerT}
+      >
+        <Text style={{ color: "#fff", marginBottom: 2 }}>Explore</Text>
+        <FontAwesome name="wpexplorer" size={20} color="#fff" />
+      </TouchableOpacity>
 
-        <TouchableOpacity
-          activeOpacity={0.8}
-          onPress={() => navigation.navigate("Search")}
-          style={styles.explorerT}
-        >
-          <Text style={{ color: "#fff" }}>Search</Text>
-          <Ionicons name="ios-search-outline" size={20} color="#fff" />
-        </TouchableOpacity>
+      <TouchableOpacity
+        activeOpacity={0.8}
+        onPress={() => navigation.navigate("Search")}
+        style={styles.explorerT}
+      >
+        <Text style={{ color: "#fff" }}>Search</Text>
+        <Ionicons name="ios-search-outline" size={20} color="#fff" />
+      </TouchableOpacity>
 
-        <TouchableOpacity
-          activeOpacity={0.8}
-          onPress={() => navigation.navigate("Profile")}
-          style={styles.Profile}
-        >
-          <Text style={{ color: "#fff" }}>C</Text>
-        </TouchableOpacity>
-      </Animated.View>
-    </View>
+      <TouchableOpacity
+        activeOpacity={0.8}
+        onPress={() => navigation.navigate("Profile")}
+        style={styles.Profile}
+      >
+        <Text style={{ color: "#fff" }}>C</Text>
+      </TouchableOpacity>
+    </Animated.View>
   );
 };
 
@@ -64,11 +62,10 @@ const styles = StyleSheet.create({
   explorer: {
     // position: "relative",
     // top: Platform.OS === "ios" ? 400 : 455,
-    // zIndex: 3,
     width: width / 1.1,
     height: 70,
     padding: 15,
-    backgroundColor: dark ? "#393E46" : "#73A5C6",
+    backgroundColor: "transparent",
     borderRadius: 10,
     flexDirection: "row",
     justifyContent: "space-evenly",
@@ -88,8 +85,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   Profile: {
-    width: 35,
-    height: 35,
+    width: 40,
+    height: 40,
     borderRadius: 50,
     backgroundColor: "#3d5c3a",
     alignItems: "center",

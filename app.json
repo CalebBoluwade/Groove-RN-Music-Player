@@ -3,12 +3,12 @@
     "name": "GrooveApp",
     "slug": "GrooveApp",
     "version": "1.0.2",
-    "orientation": "portrait",
+    "orientation": "cover",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",
     "splash": {
       "image": "./assets/splash.png",
-      "resizeMode": "stretch",
+      "resizeMode": "contain",
       "backgroundColor": "#000"
     },
     "updates": {

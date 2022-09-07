@@ -10,12 +10,15 @@ import {
   Appearance,
   Platform,
   ImageBackground,
+  Switch,
 } from "react-native";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useContext } from "react";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Slider from "@react-native-community/slider";
 import songsData from "../Models/data";
+import { DetailsContext } from "../Context/AppContextProvider";
 
 import TrackPlayer, {
   Capability,
@@ -35,6 +38,14 @@ const shareActionSheet = () => {
 };
 
 const PlayerModal = ({ navigation }: any) => {
+  const {
+    setCurrentSongArtist,
+    setCurrentSongTitle,
+    setCurrentSongArtwork,
+    currentSongTitle,
+    currentSongArtist,
+    currentSongArtwork,
+  }: any = useContext(DetailsContext);
   // const playbackState = usePlaybackState();
   // const progress = useProgress();
 
@@ -55,9 +66,9 @@ const PlayerModal = ({ navigation }: any) => {
   };
   const [repeatModeIcon, setRepeatMode] = useState("off");
 
-  const triggerRepeatMode = async () => {
+  const triggerRepeatMode = () => {
     if (repeatModeIcon == "off") {
-      return "repeat-off";
+      return "repeat";
     }
     if (repeatModeIcon == "track") {
       return "repeat-once";
@@ -84,7 +95,18 @@ const PlayerModal = ({ navigation }: any) => {
 
   const scrollX = useRef(new Animated.Value(0)).current;
   const [songIndex, setSongIndex] = useState<any>("0");
-  const songSlider = useRef(null);
+  const songSlider: any = useRef(null);
+
+  // useTrackPlayerEvents([Event.PlaybackTrackChanged], async (event: any) => {
+  //   if (event.type === Event.PlaybackTrackChanged && event.nextTrack !== null) {
+  //     const track = await TrackPlayer.getTrack(event);
+  //     const { title, artist, artwork }: any = track;
+
+  //     setCurrentSongTitle(title),
+  //       setCurrentSongArtist(artist),
+  //       setCurrentSongArtwork(artwork);
+  //   }
+  // });
 
   const skipTo = async (trackId: number) => {
     // await TrackPlayer.skip(trackId);
@@ -131,8 +153,8 @@ const PlayerModal = ({ navigation }: any) => {
         </View>
 
         <View>
-          <Text style={styles.songTitle}>{songsData[songIndex].title}</Text>
-          <Text style={styles.artistName}>{songsData[songIndex].artist}</Text>
+          <Text style={styles.songTitle}>{currentSongTitle}</Text>
+          <Text style={styles.artistName}>{setCurrentSongArtist}</Text>
         </View>
 
         <View style={{ paddingHorizontal: 5, width: width }}>
@@ -169,6 +191,27 @@ const PlayerModal = ({ navigation }: any) => {
       style={styles.container}
     >
       <View style={styles.mainContainer}>
+        {Platform.OS === "android" ? (
+          <View style={styles.playerTopControls}>
+            <TouchableOpacity onPress={() => navigation.navigate("Home")}>
+              <Ionicons
+                name={"ios-chevron-down"}
+                size={30}
+                color={colorScheme === "dark" ? "#fff" : "#fff"}
+              />
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.topAudioVideo}>
+              <Text style={{ color: "#fff", paddingHorizontal: 7 }}>Audio</Text>
+              <Text style={{ color: "#fff", paddingHorizontal: 7 }}>Video</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity>
+              <Ionicons name="ellipsis-vertical" size={25} color="#fff" />
+            </TouchableOpacity>
+          </View>
+        ) : null}
+
         <View style={{ width: width }}>
           <Animated.FlatList
             ref={songSlider}
@@ -238,16 +281,22 @@ const PlayerModal = ({ navigation }: any) => {
       </View>
 
       <View style={styles.bottomContainer}>
+        {/* <Switch trackColor={{ false: "#767577", true: "#81b0ff" }} /> */}
         <View style={styles.bottomButtons}>
           <TouchableOpacity>
             <Ionicons name="heart-outline" size={30} color="#777777" />
           </TouchableOpacity>
+
           <TouchableOpacity onPress={repeatMode}>
-            <Ionicons
+            <MaterialCommunityIcons
               name={`${triggerRepeatMode()}`}
               size={30}
-              color={repeatModeIcon === "off" ? "#777777" : "#FFFFFF"}
+              color={`${triggerRepeatMode()}` ? "#777777" : "#FFFFFF"}
             />
+          </TouchableOpacity>
+
+          <TouchableOpacity>
+            <MaterialIcons name="chat" size={30} color="#777777" />
           </TouchableOpacity>
 
           <TouchableOpacity onPress={shareActionSheet}>
@@ -275,6 +324,26 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0,0,0, 0.8)",
     justifyContent: "center",
     alignSelf: "center",
+  },
+  playerTopControls: {
+    position: "absolute",
+    top: 7,
+
+    padding: 15,
+    width: width,
+    justifyContent: "space-between",
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  topAudioVideo: {
+    elevation: 3,
+    // height: 50,
+    padding: 12,
+    paddingHorizontal: 27,
+    backgroundColor: "#777",
+    borderRadius: 20,
+    borderColor: "#fff",
+    flexDirection: "row",
   },
   artworkContainer: {
     width: Platform.OS === "android" ? 385 : 355,

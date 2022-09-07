@@ -4,16 +4,20 @@ import {
   View,
   TouchableOpacity,
   Animated,
+  Appearance,
+  Platform,
 } from "react-native";
 import React, { useRef, useState } from "react";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Slider from "@react-native-community/slider";
 import songsData from "../Models/data";
 
+let colorScheme = Appearance.getColorScheme();
+
 const ModalTrigger = ({ navigation }: any) => {
-  const scrollX = useRef(new Animated.Value(0)).current;
+  // const scrollX = useRef(new Animated.Value(0)).current;
   const [songIndex, setSongIndex] = useState<any>("0");
-  const songSlider = useRef(null);
+  // const songSlider = useRef(null);
 
   return (
     <TouchableOpacity
@@ -62,13 +66,16 @@ export default ModalTrigger;
 
 const styles = StyleSheet.create({
   playerModal: {
-    backgroundColor: "#000",
-    borderTopColor: "#393E46",
+    backgroundColor: colorScheme === "dark" ? "#393E46" : "#ccc",
+    borderWidth: 1,
+    // borderTopColor: colorScheme === "dark" ? "#ccc" : "#393E46",
+    borderColor: colorScheme === "dark" ? "#000" : "#393E46",
   },
   modalView: {
     justifyContent: "space-between",
     flexDirection: "row",
-    paddingVertical: 5,
+    alignItems: "center",
+    paddingVertical: 10,
     paddingHorizontal: 15,
   },
   progress: {
@@ -76,18 +83,18 @@ const styles = StyleSheet.create({
     bottom: 18,
   },
   songTitleModal: {
-    fontSize: 18,
-    fontWeight: "400",
+    fontSize: 21,
+    fontWeight: "600",
     textAlign: "left",
     color: "#fff",
-    marginBottom: 10,
+    marginBottom: 3,
   },
 
   artistNameModal: {
     textAlign: "left",
-    fontSize: 12,
-    marginTop: 5,
-    fontWeight: "300",
+    fontSize: 18,
+    marginTop: 2,
+    fontWeight: "400",
     color: "#fff",
     marginBottom: 10,
   },
