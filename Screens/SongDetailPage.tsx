@@ -21,8 +21,9 @@ import { DetailsContext } from "../Context/AppContextProvider";
 const { width } = Dimensions.get("window");
 const colorScheme = Appearance.getColorScheme();
 
-const SongDetailPage = ({ navigation }: any) => {
+const SongDetailPage = ({ route, navigation }: any) => {
   const { detailsData }: any = useContext(DetailsContext);
+  const { item } = route.params;
   // console.log(detailsData);
 
   const renderItem2 = () => {
@@ -37,13 +38,13 @@ const SongDetailPage = ({ navigation }: any) => {
               color: colorScheme === "dark" ? "#fff" : "#000",
             }}
           >
-            {detailsData.id}
+            {item.id}
           </Text>
           {/* <Image style={styles.playlistItem} source={item.artwork} /> */}
 
           <View>
             <Text style={{ color: colorScheme === "dark" ? "#fff" : "#000" }}>
-              {detailsData?.title}
+              {item.title}
             </Text>
 
             <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -54,15 +55,21 @@ const SongDetailPage = ({ navigation }: any) => {
                 color={colorScheme === "dark" ? "#fff" : "#000"}
               />
               <Text style={{ color: colorScheme === "dark" ? "#fff" : "#000" }}>
-                {detailsData?.artist}
+                {item.artist}
               </Text>
             </View>
           </View>
         </View>
 
+        <Text>
+          {
+            /* {new Date((progress.duration - progress.position) * 10000).toISOString().substring(14, 5)} */ "-: --"
+          }
+        </Text>
+
         <TouchableOpacity
           style={{ justifyContent: "center" }}
-          onPress={() => navigation.navigate("SongOptions")}
+          onPress={() => navigation.navigate("SongOptions", { item: item })}
         >
           <Ionicons name="ellipsis-vertical" size={21} color="#777777" />
         </TouchableOpacity>
@@ -70,7 +77,7 @@ const SongDetailPage = ({ navigation }: any) => {
     );
   };
 
-  let detailsArray = [detailsData];
+  let items = [item];
 
   return (
     <View style={styles.container}>
@@ -107,11 +114,11 @@ const SongDetailPage = ({ navigation }: any) => {
         </View>
 
         <View style={styles.artistInfo}>
-          <Image style={styles.artwork} source={detailsData?.artwork} />
+          <Image style={styles.artwork} source={item.artwork} />
 
           <View style={{ width: 200, height: 150 }}>
-            <Text style={styles.songInfoTitle}>{detailsData.title}</Text>
-            <Text style={styles.songInfoName}>{detailsData?.artist}</Text>
+            <Text style={styles.songInfoTitle}>{item.title}</Text>
+            <Text style={styles.songInfoName}>{item.artist}</Text>
 
             <View style={styles.artistInfo}>
               <MaterialIcons
@@ -122,7 +129,7 @@ const SongDetailPage = ({ navigation }: any) => {
               />
 
               <Text style={styles.songInfoName}>
-                {detailsData?.album ? "Album" : "Single"} . {2022}
+                {item.album ? "Album" : "Single"} . {2022}
               </Text>
             </View>
           </View>
@@ -160,7 +167,7 @@ const SongDetailPage = ({ navigation }: any) => {
 
         {/* <ScrollView horizontal> */}
         <FlatList
-          data={detailsArray}
+          data={items}
           renderItem={renderItem2}
           keyExtractor={(item) => item.id}
           scrollEnabled={false}

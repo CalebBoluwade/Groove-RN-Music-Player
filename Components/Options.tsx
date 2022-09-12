@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
     // borderTopRadius: "#393E46",
     // flex: 1,
     zIndex: 3,
-    height: 425,
+    height: 465,
     padding: 15,
     borderTopRadius: 15,
     elevation: 25,

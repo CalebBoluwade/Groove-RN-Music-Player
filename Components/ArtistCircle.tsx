@@ -19,7 +19,7 @@ const ArtistCircle = ({ Data, header, navigation }: any) => {
     return (
       <TouchableOpacity
         style={styles.Artist}
-        onPress={() => navigation.navigate("Artist")}
+        onPress={() => navigation.navigate("Artist", { item: item })}
       >
         <Image
           source={item.artistImg}

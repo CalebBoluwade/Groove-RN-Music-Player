@@ -123,7 +123,13 @@ const MusicPlayer = ({ navigation }: any) => {
           <Image style={styles.playlistItem} source={item.artwork} />
 
           <View style={{ width: "80%" }}>
-            <Text style={{ color: colorScheme === "dark" ? "#fff" : "#000" }}>
+            <Text
+              style={{
+                color: colorScheme === "dark" ? "#fff" : "#000",
+                fontSize: 22.5,
+                fontWeight: "300",
+              }}
+            >
               {item.title}
             </Text>
             <Text style={{ color: colorScheme === "dark" ? "#fff" : "#000" }}>

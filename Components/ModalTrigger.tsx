@@ -87,15 +87,15 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     textAlign: "left",
     color: "#fff",
-    marginBottom: 3,
+    // marginBottom: 3,
   },
 
   artistNameModal: {
     textAlign: "left",
     fontSize: 18,
-    marginTop: 2,
+    // marginTop: 2,
     fontWeight: "400",
     color: "#fff",
-    marginBottom: 10,
+    marginBottom: 3,
   },
 });

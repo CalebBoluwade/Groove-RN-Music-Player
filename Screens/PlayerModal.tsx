@@ -156,31 +156,6 @@ const PlayerModal = ({ navigation }: any) => {
           <Text style={styles.songTitle}>{currentSongTitle}</Text>
           <Text style={styles.artistName}>{setCurrentSongArtist}</Text>
         </View>
-
-        <View style={{ paddingHorizontal: 5, width: width }}>
-          <Slider
-            style={styles.progressContainer}
-            // value={progress.position}
-            minimumValue={0}
-            maximumValue={100}
-            // maximumValue={Progress.duration}
-            thumbTintColor="#FFD369"
-            minimumTrackTintColor="#FFD369"
-            maximumTrackTintColor="#fff"
-            onSlidingComplete={async (value) => {
-              // await TrackPlayer.seekTo(value)
-            }}
-          />
-          <View style={styles.progressLabel}>
-            <Text style={styles.progressLabelBegin}>
-              {/* {new Date(progress.position * 10000).toISOString().substring(14, 5)} */}
-              0.00
-            </Text>
-            <Text style={styles.progressLabelEnd}>
-              {/* {new Date((progress.duration - progress.position) * 10000).toISOString().substring(14, 5)} */}
-            </Text>
-          </View>
-        </View>
       </Animated.View>
     );
   };
@@ -233,6 +208,59 @@ const PlayerModal = ({ navigation }: any) => {
               { useNativeDriver: true }
             )}
           />
+        </View>
+
+        <View
+          style={{
+            flexDirection: "row",
+            width: width / 1.1,
+            justifyContent: "space-between",
+            alignItems: "center",
+            alignSelf: "center",
+          }}
+        >
+          <TouchableOpacity>
+            <Ionicons
+              name="thumbs-down-outline"
+              size={25}
+              color={colorScheme === "dark" ? "#fff" : "#777777"}
+            />
+          </TouchableOpacity>
+
+          <View style={styles.musicControls}>
+            <TouchableOpacity>
+              <Ionicons
+                name="thumbs-up-outline"
+                size={25}
+                color={colorScheme === "dark" ? "#fff" : "#777777"}
+              />
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        <View style={{ paddingHorizontal: 5, width: width }}>
+          <Slider
+            style={styles.progressContainer}
+            // value={progress.position}
+            minimumValue={0}
+            maximumValue={100}
+            // maximumValue={Progress.duration}
+            thumbTintColor="#FFD369"
+            minimumTrackTintColor="#FFD369"
+            maximumTrackTintColor="#fff"
+            onSlidingComplete={async (value) => {
+              // await TrackPlayer.seekTo(value)
+            }}
+          />
+          <View style={styles.progressLabel}>
+            <Text style={styles.progressLabelBegin}>
+              {/* {new Date(progress.position * 10000).toISOString().substring(14, 5)} */}
+              0.00
+            </Text>
+            <Text style={styles.progressLabelEnd}>
+              {/* {new Date((progress.duration - progress.position) * 10000).toISOString().substring(14, 5)} */}
+            </Text>
+          </View>
         </View>
 
         <View style={styles.musicControls}>
@@ -372,13 +400,13 @@ const styles = StyleSheet.create({
   artistName: {
     textAlign: "center",
     fontSize: 16,
-    marginTop: 10,
+    marginTop: 7,
     fontWeight: "300",
     color: "#fff",
   },
   progressContainer: {
     flexDirection: "row",
-    marginTop: 15,
+    marginTop: 10,
     height: 40,
     width: "93%",
     justifyContent: "center",

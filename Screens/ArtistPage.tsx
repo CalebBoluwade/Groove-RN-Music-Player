@@ -16,7 +16,10 @@ import songsData from "../Models/data";
 
 let colorScheme = Appearance.getColorScheme();
 
-const ArtistPage = () => {
+const ArtistPage = ({ route }: any) => {
+  const { item } = route.params;
+
+  // console.log(item);
   const renderSongss = ({ item }: any) => {
     // console.log(item);
     return (
@@ -40,24 +43,21 @@ const ArtistPage = () => {
   };
 
   return (
-    <ScrollView
-      showsVerticalScrollIndicator={false}
+    <View
+      // showsVerticalScrollIndicator={false}
       style={{
         flex: 1,
         backgroundColor: colorScheme === "dark" ? "#000" : "",
       }}
     >
       <View>
-        <ImageBackground
-          source={require("../Models/Data/Artwork/Call-Me-Everyday.jpg")}
-          style={styles.artistImg}
-        >
+        <ImageBackground source={item.artistImg} style={styles.artistImg}>
           <View style={styles.artistPlayDisplay}>
-            <Text style={styles.artistPlayText}>{"BNXN FKA BUJU"}</Text>
+            <Text style={styles.artistPlayText}>{item.artistName}</Text>
             <Ionicons
               name="play-circle"
               size={85}
-              color={colorScheme === "dark" ? "#3f5d4c" : "#000"}
+              color={colorScheme === "dark" ? "#000" : "#FFF"}
             />
           </View>
         </ImageBackground>
@@ -134,7 +134,7 @@ const ArtistPage = () => {
           </View>
         </View>
       </View>
-    </ScrollView>
+    </View>
   );
 };
 
@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
     bottom: -10,
   },
   artistPlayText: {
-    color: colorScheme === "dark" ? "#777" : "#000",
+    color: colorScheme === "dark" ? "#000" : "#fff",
     fontSize: 32,
     fontWeight: "900",
   },
@@ -169,8 +169,8 @@ const styles = StyleSheet.create({
     borderRadius: 7,
     backgroundColor:
       colorScheme === "dark"
-        ? "rgba(255, 255, 255, 0.2)"
-        : "rgba(0, 0, 0, 0.5)",
+        ? "rgba(255, 255, 255, 0.3)"
+        : "rgba(0, 0, 0, 0.8)",
   },
   releaseText: {
     color: colorScheme === "dark" ? "#777" : "#000",
