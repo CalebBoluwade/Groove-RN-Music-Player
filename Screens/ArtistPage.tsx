@@ -7,17 +7,31 @@ import {
   Appearance,
   ScrollView,
   FlatList,
-  VirtualizedList,
+  Animated,
   TouchableOpacity,
 } from "react-native";
 import React from "react";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import songsData from "../Models/data";
+import { Gesture, GestureDetector } from "react-native-gesture-handler";
+import { useSharedValue, useAnimatedStyle } from "react-native-reanimated";
 
 let colorScheme = Appearance.getColorScheme();
 
 const ArtistPage = ({ route }: any) => {
   const { item } = route.params;
+
+  const translateY = useSharedValue(0);
+
+  const gesture = Gesture.Pan().onUpdate((event) => {
+    console.log(event.translationY);
+  });
+
+  const bottomSheet = useAnimatedStyle(() => {
+    return {
+      transform: [{ translateY: translateY.value }],
+    };
+  });
 
   // console.log(item);
   const renderSongss = ({ item }: any) => {
@@ -80,28 +94,30 @@ const ArtistPage = ({ route }: any) => {
             />
           </View>
 
-          <View>
-            <Text
-              style={{
-                color: colorScheme === "dark" ? "#fff" : "#000",
-                fontSize: 30,
-              }}
-            >
-              Top Songs
-            </Text>
-            <Text>More</Text>
+          <GestureDetector gesture={gesture}>
+            <Animated.View style={[bottomSheet]}>
+              <Text
+                style={{
+                  color: colorScheme === "dark" ? "#fff" : "#000",
+                  fontSize: 30,
+                }}
+              >
+                Top Songs
+              </Text>
+              <Text>More</Text>
 
-            <View>
-              <FlatList
-                data={songsData}
-                renderItem={renderSongss}
-                keyExtractor={(item) => item.id}
-                showsHorizontalScrollIndicator={false}
-                scrollEventThrottle={18}
-                // onLongPress={() => navigation.navigate("SongOptions")}
-              />
-            </View>
-          </View>
+              <View>
+                <FlatList
+                  data={songsData}
+                  renderItem={renderSongss}
+                  keyExtractor={(item) => item.id}
+                  showsHorizontalScrollIndicator={false}
+                  scrollEventThrottle={18}
+                  // onLongPress={() => navigation.navigate("SongOptions")}
+                />
+              </View>
+            </Animated.View>
+          </GestureDetector>
 
           <View style={{ marginTop: 5 }}>
             <Text

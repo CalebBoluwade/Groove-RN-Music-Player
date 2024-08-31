@@ -16,7 +16,9 @@ import {
   ScrollView,
 } from "react-native";
 import React, { useEffect, useState, useRef, useContext } from "react";
+import { Card } from "react-native-paper";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import songsData from "../Models/data";
@@ -36,7 +38,6 @@ import TrackPlayer, {
 import TopDock from "../Components/TopDock";
 import ModalTrigger from "../Components/ModalTrigger";
 import { DefaultTheme } from "@react-navigation/native";
-// import { DetailsContext } from "../Context/AppContextProvider";
 import { FunctContext } from "../Context/FunctionsProvider";
 import { DetailsContext } from "../Context/AppContextProvider";
 import ArtistCircle from "../Components/ArtistCircle";
@@ -50,6 +51,21 @@ const MusicPlayer = ({ navigation }: any) => {
   // const progress = useProgress();
 
   // console.log(SongOptionsBtn, DetailsPage);
+
+  const onViewableItemsChanged = ({ viewableItems, changed }: any) => {
+    console.log("Visible items are", viewableItems);
+    console.log("Changed in this iteration", changed);
+  };
+
+  const viewabilityConfig = {
+    itemVisiblePercentThreshold: 50,
+  };
+
+  let sliceArray0 = songsData.slice(0, 3);
+  let sliceArray1 = songsData.slice(4, 7);
+  let sliceArray2 = songsData.slice(8, 11);
+  let sliceArray3 = songsData.slice(12, 15);
+  const AllArray = [sliceArray0, sliceArray1, sliceArray2, sliceArray3];
 
   const SongOptionsBtn = (item: object) => {
     setOptionsData(item);
@@ -116,13 +132,66 @@ const MusicPlayer = ({ navigation }: any) => {
     );
   };
 
-  const renderItem2 = ({ item }: any) => {
-    return (
-      <TouchableOpacity style={styles.playlistContainer}>
-        <View style={styles.playlistContainer}>
-          <Image style={styles.playlistItem} source={item.artwork} />
+  const renderItem2 = ({ item, index }: any) => {
+    // console.log(index);
 
-          <View style={{ width: "80%" }}>
+    return (
+      <Card style={{ backgroundColor: "transparent", marginHorizontal: 10 }}>
+        {AllArray[index].map((song, index) => {
+          return (
+            <TouchableOpacity key={index} style={styles.playlistContainer}>
+              <Image style={styles.playlistItem} source={song.artwork} />
+
+              {/* <View >
+                <Text
+                  style={{
+                    color: colorScheme === "dark" ? "#fff" : "#000",
+                    fontSize: 20.5,
+                    fontWeight: "300",
+                  }}
+                >
+                  {song.title}
+                </Text>
+                <Text
+                  style={{ color: colorScheme === "dark" ? "#fff" : "#000" }}
+                >
+                  {song.artist}
+                </Text>
+              </View> */}
+              <View style={{ marginLeft: 8 }}>
+                <Text
+                  style={{
+                    color: colorScheme === "dark" ? "#fff" : "#000",
+                    fontSize: 18.5,
+                    fontWeight: "300",
+                  }}
+                >
+                  {song.title}
+                </Text>
+
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <MaterialIcons
+                    name="explicit"
+                    size={21}
+                    style={{ marginRight: 5 }}
+                    color={colorScheme === "dark" ? "#fff" : "#000"}
+                  />
+                  <Text
+                    style={{ color: colorScheme === "dark" ? "#fff" : "#000" }}
+                  >
+                    {song.artist}
+                  </Text>
+                </View>
+              </View>
+            </TouchableOpacity>
+          );
+        })}
+        {/* <TouchableOpacity style={styles.playlistContainer}>
+          {
+            songsData.map((song, index) => {
+              <View key={index} style={styles.playlistContainer}>
+                <Image style={styles.playlistItem} source={item.artwork} />
+                <View style={{ width: "80%" }}>
             <Text
               style={{
                 color: colorScheme === "dark" ? "#fff" : "#000",
@@ -136,18 +205,12 @@ const MusicPlayer = ({ navigation }: any) => {
               {item.artist}
             </Text>
           </View>
-        </View>
+              </View>
+            })
+          }
 
-        <View>
-          <TouchableOpacity onPress={() => navigation.navigate("SongOptions")}>
-            <Ionicons
-              name="ellipsis-vertical"
-              size={20}
-              color={colorScheme === "dark" ? "#777" : "#000"}
-            />
-          </TouchableOpacity>
-        </View>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
+      </Card>
     );
   };
 
@@ -189,7 +252,9 @@ const MusicPlayer = ({ navigation }: any) => {
                 keyExtractor={(item) => item.id}
                 style={styles.Boxes}
                 horizontal
+                snapToAlignment="start"
                 showsHorizontalScrollIndicator={false}
+                pagingEnabled
                 scrollEventThrottle={18}
               ></FlatList>
             </View>
@@ -197,20 +262,29 @@ const MusicPlayer = ({ navigation }: any) => {
 
           <View>
             <Text style={styles.BoxText}>Quick Picks</Text>
-            <ScrollView horizontal>
-              <FlatList
-                data={songsData}
-                renderItem={renderItem2}
-                keyExtractor={(item) => item.id}
-                // renderSectionHeader={
-                // style={styles.playlistContainer}
-                // initialNumToRender={4}
-                scrollEnabled={false}
-                showsHorizontalScrollIndicator={false}
-                scrollEventThrottle={12}
-              />
-            </ScrollView>
+
+            <FlatList
+              data={AllArray}
+              renderItem={renderItem2}
+              // horizontal
+              // keyExtractor={(item, index) => index}
+              // renderSectionHeader={
+              // style={styles.playlistContainer}
+              // initialNumToRender={4}
+              horizontal
+              snapToAlignment="start"
+              showsHorizontalScrollIndicator={false}
+              // onViewableItemsChanged={onViewableItemsChanged}
+              // viewabilityConfig={viewabilityConfig}
+              scrollEventThrottle={64}
+            />
           </View>
+
+          <ArtistCircle
+            header="Top Charts Artists"
+            Data={artistData.reverse()}
+            navigation={navigation}
+          />
         </ScrollView>
       </SafeAreaView>
 
@@ -275,16 +349,16 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   playlistContainer: {
-    // width: "85%",
+    width: width,
     flexDirection: "row",
-    justifyContent: "space-between",
+    // justifyContent: "space-between",
     alignItems: "center",
     paddingHorizontal: 7,
-    marginVertical: 3,
+    marginVertical: 5,
   },
   playlistItem: {
-    width: 40,
-    height: 40,
+    width: 50,
+    height: 50,
   },
   playerModal: {
     // borderTopColor: "#393E46",
